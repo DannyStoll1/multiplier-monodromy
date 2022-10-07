@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 
+import sys
 from math import ceil, log10, cos, sin, tan, sqrt, pi
 from fractions import Fraction
 import matplotlib.pyplot as plt
@@ -38,7 +39,7 @@ class Lamination:
             for k in range(ceil(n*a), ceil(n*b)):
                 if counters[k] != -1:
                     counters[k] ^= (1<<id)
-
+        
         angles = {}
 
         it = enumerate(counters)
@@ -160,11 +161,12 @@ class Lamination:
         plt.show()
 
 if __name__ == '__main__':
-    lam = Lamination(5, 3)
+    args = sys.argv[1:]
+    if len(args) > 0:
+        max_period = int(args[0])
+    else:
+        max_period = 7
 
-    arc_length_first_digits = [x//10**int(log10(x)-1)
-            for x in lam.arc_lengths_cumulative_set() if x != 0]
-    plt.hist(arc_length_first_digits, bins=9)
-    plt.show()
+    lam = Lamination(max_period)
 
-    lam.draw(5)
+    lam.draw()
